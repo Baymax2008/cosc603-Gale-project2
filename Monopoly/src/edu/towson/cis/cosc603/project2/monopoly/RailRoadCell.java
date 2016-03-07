@@ -46,7 +46,7 @@ public class RailRoadCell extends Cell {
 	 * @return the rent
 	 */
 	public int getRent() {
-		return RailRoadCell.baseRent * (int)Math.pow(2, owner.numberOfRR() - 1);
+		return RailRoadCell.baseRent * (int)Math.pow(2, theOwner.numberOfRR() - 1);
 	}
 	
 	/* (non-Javadoc)
@@ -56,8 +56,8 @@ public class RailRoadCell extends Cell {
 		Player currentPlayer = null;
 		if(!isAvailable()) {
 			currentPlayer = GameMaster.instance().getCurrentPlayer();
-			if(owner != currentPlayer) {
-				currentPlayer.payRentTo(owner, getRent());
+			if(theOwner != currentPlayer) {
+				currentPlayer.payRentTo(theOwner, getRent());
 			}
 		}
 	}
