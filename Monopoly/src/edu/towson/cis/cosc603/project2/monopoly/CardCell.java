@@ -8,8 +8,7 @@ public class CardCell extends Cell {
     
     /** The type. */
     private int type;
-    
-    /**
+	/**
      * Instantiates a new card cell.
      *
      * @param type the type

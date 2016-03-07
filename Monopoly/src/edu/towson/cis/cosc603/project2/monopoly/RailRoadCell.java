@@ -32,7 +32,7 @@ public class RailRoadCell extends Cell {
 	public static void setPrice(int price) {
 		RailRoadCell.price = price;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see edu.towson.cis.cosc442.project1.monopoly.Cell#getPrice()
 	 */

@@ -6,14 +6,14 @@ package edu.towson.cis.cosc603.project2.monopoly;
  */
 public abstract class Cell {
 	
-	/** The available. */
-	private boolean available = true;
-	
 	/** The name. */
 	private String name;
 	
 	/** The theOwner. */
 	protected Player theOwner;
+
+	/** The available. */
+	private boolean available = true;
 
 	/**
 	 * Gets the name.
@@ -43,28 +43,10 @@ public abstract class Cell {
 	}
 
 	/**
-	 * Checks if is available.
-	 *
-	 * @return true, if is available
-	 */
-	public boolean isAvailable() {
-		return available;
-	}
-	
-	/**
 	 * Play action.
 	 */
 	public abstract void playAction();
 
-	/**
-	 * Sets the available.
-	 *
-	 * @param available the new available
-	 */
-	public void setAvailable(boolean available) {
-		this.available = available;
-	}
-	
 	/**
 	 * Sets the name.
 	 *
@@ -89,4 +71,22 @@ public abstract class Cell {
     public String toString() {
         return name;
     }
+
+	/**
+	 * Checks if is available.
+	 *
+	 * @return true, if is available
+	 */
+	public boolean isAvailable() {
+		return available;
+	}
+
+	/**
+	 * Sets the available.
+	 *
+	 * @param available the new available
+	 */
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
 }

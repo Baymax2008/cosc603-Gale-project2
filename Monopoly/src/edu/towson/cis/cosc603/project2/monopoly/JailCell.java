@@ -8,7 +8,6 @@ public class JailCell extends Cell {
 	
 	/** The bail. */
 	public static int BAIL = 50;
-	
 	/**
 	 * Instantiates a new jail cell.
 	 */
