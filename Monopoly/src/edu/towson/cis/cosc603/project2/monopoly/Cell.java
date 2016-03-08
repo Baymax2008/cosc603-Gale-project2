@@ -4,7 +4,7 @@ package edu.towson.cis.cosc603.project2.monopoly;
 /**
  * The Class Cell.
  */
-public abstract class Cell {
+public abstract class Cell implements IOwnable {
 	
 	/** The name. */
 	private String name;
@@ -24,11 +24,10 @@ public abstract class Cell {
 		return name;
 	}
 
-	/**
-	 * Gets the theOwner.
-	 *
-	 * @return the theOwner
+	/* (non-Javadoc)
+	 * @see edu.towson.cis.cosc603.project2.monopoly.IOwnable#getTheOwner()
 	 */
+	@Override
 	public Player getTheOwner() {
 		return theOwner;
 	}
@@ -56,11 +55,10 @@ public abstract class Cell {
 		this.name = name;
 	}
 
-	/**
-	 * Sets the theOwner.
-	 *
-	 * @param theOwner the new theOwner
+	/* (non-Javadoc)
+	 * @see edu.towson.cis.cosc603.project2.monopoly.IOwnable#setTheOwner(edu.towson.cis.cosc603.project2.monopoly.Player)
 	 */
+	@Override
 	public void setTheOwner(Player owner) {
 		this.theOwner = owner;
 	}

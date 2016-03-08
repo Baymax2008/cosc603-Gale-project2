@@ -130,12 +130,12 @@ public class Player {
      *
      * @return the all properties
      */
-    public Cell[] getAllProperties() {
+    public IOwnable[] getAllProperties() {
         ArrayList<Cell> list = new ArrayList<Cell>();
         list.addAll(properties);
         list.addAll(utilities);
         list.addAll(railroads);
-        return (Cell[])list.toArray(new Cell[list.size()]);
+        return (IOwnable[])list.toArray(new Cell[list.size()]);
     }
 
 	/**
@@ -367,7 +367,7 @@ public class Player {
      * @param property the property
      * @param amount the amount
      */
-    public void sellProperty(Cell property, int amount) {
+    public void sellProperty(IOwnable property, int amount) {
         property.setTheOwner(null);
         if(property instanceof PropertyCell) {
             properties.remove(property);
