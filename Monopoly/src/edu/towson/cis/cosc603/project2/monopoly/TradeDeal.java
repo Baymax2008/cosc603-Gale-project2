@@ -84,4 +84,16 @@ public class TradeDeal {
     public void setSellerIndex(int playerIndex) {
         this.playerIndex = playerIndex;
     }
+
+	/**
+	 * Complete trade.
+	 * @param gameBoard
+	 * @param gameMaster
+	 */
+	public void completeTrade(GameBoard gameBoard, GameMaster gameMaster) {
+		Player seller = gameMaster.getPlayer(getPlayerIndex());
+		Cell property = gameBoard.queryCell(getPropertyName());
+		seller.sellProperty(property, getAmount());
+		gameMaster.getCurrentPlayer().buyProperty(property, getAmount());
+	}
 }

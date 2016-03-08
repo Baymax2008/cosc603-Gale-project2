@@ -9,15 +9,10 @@ import java.util.Hashtable;
  */
 public class GameBoard {
 
-	/** The cells. */
-	private ArrayList<Cell> cells = new ArrayList<Cell>();
-    
-    /** The chance cards. */
+	private GameBoardProduct gameBoardProduct = new GameBoardProduct();
+
+	/** The chance cards. */
     private ArrayList<Card> chanceCards = new ArrayList<Card>();
-	//the key of colorGroups is the name of the color group.
-	/** The color groups. */
-	private Hashtable<String, Integer> colorGroups = new Hashtable<String, Integer>();
-	
 	/** The community chest cards. */
 	private ArrayList<Card> communityChestCards = new ArrayList<Card>();
 	
@@ -48,7 +43,7 @@ public class GameBoard {
 	 * @param cell the cell
 	 */
 	public void addCell(Cell cell) {
-		cells.add(cell);
+		gameBoardProduct.getCells().add(cell);
 	}
 	
 	/**
@@ -57,10 +52,7 @@ public class GameBoard {
 	 * @param cell the cell
 	 */
 	public void addCell(PropertyCell cell) {
-		String colorGroup = cell.getColorGroup();
-		int propertyNumber = getPropertyNumberForColor(colorGroup);
-		colorGroups.put(colorGroup, new Integer(propertyNumber + 1));
-        cells.add(cell);
+		gameBoardProduct.addCell(cell);
 	}
 
     /**
@@ -94,7 +86,7 @@ public class GameBoard {
 	 * @return the cell
 	 */
 	public Cell getCell(int newIndex) {
-		return (Cell)cells.get(newIndex);
+		return gameBoardProduct.getCell(newIndex);
 	}
 	
 	/**
@@ -103,7 +95,7 @@ public class GameBoard {
 	 * @return the cell number
 	 */
 	public int getCellNumber() {
-		return cells.size();
+		return gameBoardProduct.getCellNumber();
 	}
 	
 	/**
@@ -113,20 +105,7 @@ public class GameBoard {
 	 * @return the properties in monopoly
 	 */
 	public PropertyCell[] getPropertiesInMonopoly(String color) {
-		PropertyCell[] monopolyCells = 
-			new PropertyCell[getPropertyNumberForColor(color)];
-		int counter = 0;
-		for (int i = 0; i < getCellNumber(); i++) {
-			IOwnable c = getCell(i);
-			if(c instanceof PropertyCell) {
-				PropertyCell pc = (PropertyCell)c;
-				if(pc.getColorGroup().equals(color)) {
-					monopolyCells[counter] = pc;
-					counter++;
-				}
-			}
-		}
-		return monopolyCells;
+		return gameBoardProduct.getPropertiesInMonopoly(color);
 	}
 	
 	/**
@@ -136,11 +115,7 @@ public class GameBoard {
 	 * @return the property number for color
 	 */
 	public int getPropertyNumberForColor(String name) {
-		Integer number = (Integer)colorGroups.get(name);
-		if(number != null) {
-			return number.intValue();
-		}
-		return 0;
+		return gameBoardProduct.getPropertyNumberForColor(name);
 	}
 
 	/**
@@ -150,13 +125,7 @@ public class GameBoard {
 	 * @return the cell
 	 */
 	public Cell queryCell(String string) {
-		for(int i = 0; i < cells.size(); i++){
-			Cell temp = (Cell)cells.get(i); 
-			if(temp.getName().equals(string)) {
-				return temp;
-			}
-		}
-		return null;
+		return gameBoardProduct.queryCell(string);
 	}
 	
 	/**
@@ -166,13 +135,7 @@ public class GameBoard {
 	 * @return the int
 	 */
 	public int queryCellIndex(String string){
-		for(int i = 0; i < cells.size(); i++){
-			Cell temp = (Cell)cells.get(i); 
-			if(temp.getName().equals(string)) {
-				return i;
-			}
-		}
-		return -1;
+		return gameBoardProduct.queryCellIndex(string);
 	}
 
     /**
@@ -181,4 +144,47 @@ public class GameBoard {
     public void removeCards() {
         communityChestCards.clear();
     }
+
+	/**
+	 * Move player.
+	 * @param player  the player
+	 * @param diceValue  the dice value
+	 * @param gui
+	 * @param gameMaster
+	 */
+	public void movePlayer(Player player, int diceValue, MonopolyGUI gui,
+			GameMaster gameMaster) {
+		gameBoardProduct.movePlayer(player, diceValue, gui, gameMaster);
+	}
+
+	/**
+	 * Btn draw card clicked.
+	 * @param gui
+	 * @param gameMaster
+	 * @return  the card
+	 */
+	public Card btnDrawCardClicked(MonopolyGUI gui, GameMaster gameMaster) {
+		gui.setDrawCardEnabled(false);
+		CardCell cell = (CardCell) gameMaster.getCurrentPlayer().getPosition();
+		Card card = null;
+		if (cell.getType() == Card.TYPE_CC) {
+			card = drawCCCard();
+			card.applyAction();
+		} else {
+			card = drawChanceCard();
+			card.applyAction();
+		}
+		gui.setEndTurnEnabled(true);
+		return card;
+	}
+
+	/**
+	 * Send to jail.
+	 * @param player  the player
+	 * @param gui
+	 * @param gameMaster
+	 */
+	public void sendToJail(Player player, MonopolyGUI gui, GameMaster gameMaster) {
+		gameMaster.sendToJail(player, gui, this);
+	}
 }

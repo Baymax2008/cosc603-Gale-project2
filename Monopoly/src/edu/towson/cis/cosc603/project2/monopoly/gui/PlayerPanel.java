@@ -17,13 +17,13 @@ import edu.towson.cis.cosc603.project2.monopoly.*;
 
 public class PlayerPanel extends JPanel {
 
-    /**
+    private PlayerPanelProduct playerPanelProduct = new PlayerPanelProduct();
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JButton btnBuyHouse;
     private JButton btnDrawCard;
-    private JButton btnEndTurn;
     private JButton btnGetOutOfJail;
     private JButton btnPurchaseProperty;
     private JButton btnRollDice;
@@ -41,7 +41,7 @@ public class PlayerPanel extends JPanel {
         JPanel pnlInfo = new JPanel();
         btnRollDice = new JButton("Roll Dice");
         btnPurchaseProperty = new JButton("Purchase Property");
-        btnEndTurn = new JButton("End Turn");
+        playerPanelProduct.setBtnEndTurn(new JButton("End Turn"));
         btnBuyHouse = new JButton("Buy House");
         btnGetOutOfJail = new JButton("Get Out of Jail");
         btnDrawCard = new JButton("Draw Card");
@@ -71,7 +71,7 @@ public class PlayerPanel extends JPanel {
         pnlAction.add(btnRollDice);
         pnlAction.add(btnPurchaseProperty);
         pnlAction.add(btnGetOutOfJail);
-        pnlAction.add(btnEndTurn);
+        pnlAction.add(playerPanelProduct.getBtnEndTurn());
         pnlAction.add(btnDrawCard);
         pnlAction.add(btnTrade);
 
@@ -87,7 +87,7 @@ public class PlayerPanel extends JPanel {
 
         btnRollDice.setEnabled(false);
         btnPurchaseProperty.setEnabled(false);
-        btnEndTurn.setEnabled(false);
+        playerPanelProduct.getBtnEndTurn().setEnabled(false);
         btnBuyHouse.setEnabled(false);
         btnGetOutOfJail.setEnabled(false);
         btnDrawCard.setEnabled(false);
@@ -101,7 +101,7 @@ public class PlayerPanel extends JPanel {
             }
         });
 
-        btnEndTurn.addActionListener(new ActionListener() {
+        playerPanelProduct.getBtnEndTurn().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GameMaster.instance().btnEndTurnClicked();
             }
@@ -161,7 +161,7 @@ public class PlayerPanel extends JPanel {
     }
 
     public boolean isEndTurnButtonEnabled() {
-        return btnEndTurn.isEnabled();
+        return playerPanelProduct.isEndTurnButtonEnabled();
     }
     
     public boolean isGetOutOfJailButtonEnabled() {
@@ -189,7 +189,7 @@ public class PlayerPanel extends JPanel {
     }
 
     public void setEndTurnEnabled(boolean enabled) {
-        btnEndTurn.setEnabled(enabled);
+        playerPanelProduct.setEndTurnEnabled(enabled);
     }
 
     public void setGetOutOfJailEnabled(boolean b) {

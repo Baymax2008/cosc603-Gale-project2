@@ -73,18 +73,7 @@ public class GameMaster {
      * @return the card
      */
     public Card btnDrawCardClicked() {
-        gui.setDrawCardEnabled(false);
-        CardCell cell = (CardCell)getCurrentPlayer().getPosition();
-        Card card = null;
-        if(cell.getType() == Card.TYPE_CC) {
-            card = getGameBoard().drawCCCard();
-            card.applyAction();
-        } else {
-            card = getGameBoard().drawChanceCard();
-            card.applyAction();
-        }
-        gui.setEndTurnEnabled(true);
-        return card;
+        return gameBoard.btnDrawCardClicked(gui, this);
     }
 
     /**
@@ -155,7 +144,7 @@ public class GameMaster {
 					.append(" and ")
 					.append(rolls[1]);
 			gui.showMessage(msg.toString());
-			movePlayer(player, rolls[0] + rolls[1]);
+			gameBoard.movePlayer(player, rolls[0] + rolls[1], gui, this);
 			gui.setBuyHouseEnabled(false);
 		}
     }
@@ -169,7 +158,7 @@ public class GameMaster {
         if(deal != null) {
             RespondDialog rDialog = gui.openRespondDialog(deal);
             if(rDialog.getResponse()) {
-                completeTrade(deal);
+                deal.completeTrade(gameBoard, this);
                 updateGUI();
             }
         }
@@ -181,10 +170,7 @@ public class GameMaster {
      * @param deal the deal
      */
     public void completeTrade(TradeDeal deal) {
-        Player seller = getPlayer(deal.getPlayerIndex());
-        Cell property = gameBoard.queryCell(deal.getPropertyName());
-        seller.sellProperty(property, deal.getAmount());
-        getCurrentPlayer().buyProperty(property, deal.getAmount());
+        deal.completeTrade(gameBoard, this);
     }
 
     /**
@@ -329,7 +315,7 @@ public class GameMaster {
 	 */
 	public void movePlayer(int playerIndex, int diceValue) {
 		Player player = (Player)players.get(playerIndex);
-		movePlayer(player, diceValue);
+		gameBoard.movePlayer(player, diceValue, gui, this);
 	}
 	
 	/**
@@ -339,16 +325,7 @@ public class GameMaster {
 	 * @param diceValue the dice value
 	 */
 	public void movePlayer(Player player, int diceValue) {
-		Cell currentPosition = player.getPosition();
-		int positionIndex = gameBoard.queryCellIndex(currentPosition.getName());
-		int newIndex = (positionIndex+diceValue)%gameBoard.getCellNumber();
-		if(newIndex <= positionIndex || diceValue > gameBoard.getCellNumber()) {
-			player.setMoney(player.getMoney() + 200);
-		}
-		player.setPosition(gameBoard.getCell(newIndex));
-		gui.movePlayer(getPlayerIndex(player), positionIndex, newIndex);
-		playerMoved(player);
-		updateGUI();
+		gameBoard.movePlayer(player, diceValue, gui, this);
 	}
 
 	/**
@@ -408,14 +385,7 @@ public class GameMaster {
 	 * @param player the player
 	 */
 	public void sendToJail(Player player) {
-	    int oldPosition = gameBoard.queryCellIndex(getCurrentPlayer().getPosition().getName());
-		player.setPosition(gameBoard.queryCell("Jail"));
-		player.setInJail(true);
-		int jailIndex = gameBoard.queryCellIndex("Jail");
-		gui.movePlayer(
-		        getPlayerIndex(player),
-		        oldPosition,
-		        jailIndex);
+	    gameBoard.sendToJail(player, gui, this);
 	}
     
 	/**
@@ -528,5 +498,20 @@ public class GameMaster {
 	 */
 	public void setTestMode(boolean b) {
 		testMode = b;
+	}
+
+	/**
+	 * Send to jail.
+	 * @param player   the player
+	 * @param gui
+	 * @param gameBoard
+	 */
+	public void sendToJail(Player player, MonopolyGUI gui, GameBoard gameBoard) {
+		int oldPosition = gameBoard.queryCellIndex(getCurrentPlayer()
+				.getPosition().getName());
+		player.setPosition(gameBoard.queryCell("Jail"));
+		player.setInJail(true);
+		int jailIndex = gameBoard.queryCellIndex("Jail");
+		gui.movePlayer(getPlayerIndex(player), oldPosition, jailIndex);
 	}
 }
