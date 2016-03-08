@@ -180,7 +180,7 @@ public class Player {
 	/**
 	 * Gets the out of jail.
 	 *
-	 * @return the out of jail
+	 * *@return the out of jail
 	 */
 	public void getOutOfJail() {
 		money -= JailCell.BAIL;
@@ -273,7 +273,7 @@ public class Player {
 	/**
 	 * Pay rent to.
 	 *
-	 * @param theOwner the theOwner
+	 * @param owner the owner
 	 * @param rentValue the rent value
 	 */
 	public void payRentTo(Player owner, int rentValue) {
